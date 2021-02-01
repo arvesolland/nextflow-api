@@ -288,7 +288,7 @@ class WorkflowLaunchHandler(tornado.web.RequestHandler):
 			with open(dst, 'a') as f:
 				f.write('weblog { enabled = true\n url = \"http://%s:8080/api/tasks\" }\n' % (socket.gethostbyname(socket.gethostname())))
 				f.write('local { launchDir = \"%s\" }\n' % (work_dir))
-				f.write('process { executor = "slurm" }')
+				# f.write('process { executor = "slurm" }')
 
 				# process {
 #   executor='slurm'
