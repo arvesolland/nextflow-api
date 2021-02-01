@@ -40,9 +40,8 @@ def run_workflow(workflow, work_dir, resume):
 			workflow['pipeline'],
 			'-ansi-log', 'false',
 			'-latest','1',
-			'-with-report',
-			'-with-trace',
-			'-with-timeline'
+			'-with-report','report.html',
+			'-with-trace','trace.txt',
 			'-name', 'workflow-%s-%04d' % (workflow['_id'], workflow['attempts']),
 			'-profile', workflow['profiles'],
 			'-revision', workflow['revision'],
