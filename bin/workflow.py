@@ -34,6 +34,7 @@ def run_workflow(workflow, work_dir, resume):
 	elif env.NXF_EXECUTOR == 'local':
 		args = [
 			'sbatch','--wrap',
+			'"',
 			'nextflow',
 			'-config', 'nextflow.config',
 			'-log', os.path.join(workflow['output_dir'], 'nextflow.log'),
@@ -46,7 +47,9 @@ def run_workflow(workflow, work_dir, resume):
 			'-name', 'workflow-%s-%04d' % (workflow['_id'], workflow['attempts']),
 			'-profile', workflow['profiles'],
 			'-revision', workflow['revision'],
-			'-with-docker' if workflow['with_container'] else ''
+			'-with-docker' if workflow['with_container'] else '',
+			'"'
+
 		]
 
 	elif env.NXF_EXECUTOR == 'pbspro':
