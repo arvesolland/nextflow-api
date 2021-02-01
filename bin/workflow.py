@@ -15,6 +15,16 @@ def run_workflow(workflow, work_dir, resume):
 	# change to workflow directory
 	os.chdir(work_dir)
 
+	# Create a new shell script that can be sent to SLURM via sbatch
+	run_script = os.path.join(work_dir, 'run.sh')		
+	if os.path.exists(run_script):
+		os.remove(run_script)
+
+
+	
+
+		
+
 	# launch workflow, wait for completion
 	if env.NXF_EXECUTOR == 'k8s':
 		args = [
@@ -32,9 +42,8 @@ def run_workflow(workflow, work_dir, resume):
 		]
 
 	elif env.NXF_EXECUTOR == 'local':
+		
 		args = [
-			'sbatch','--wrap',
-			'"',
 			'nextflow',
 			'-config', 'nextflow.config',
 			'-log', os.path.join(workflow['output_dir'], 'nextflow.log'),
@@ -47,10 +56,18 @@ def run_workflow(workflow, work_dir, resume):
 			'-name', 'workflow-%s-%04d' % (workflow['_id'], workflow['attempts']),
 			'-profile', workflow['profiles'],
 			'-revision', workflow['revision'],
-			'-with-docker' if workflow['with_container'] else '',
-			'"'
-
+			'-with-docker' if workflow['with_container'] else ''
 		]
+
+		with open(run_script, 'a') as f:
+			f.write('#!/bin/bash \n')
+			run_commands = " " 
+			f.write(run_commands.join(args))
+
+		args = [
+			'sbatch run.sh'
+		]
+		
 
 	elif env.NXF_EXECUTOR == 'pbspro':
 		args = [
