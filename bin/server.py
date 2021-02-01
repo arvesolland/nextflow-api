@@ -288,7 +288,19 @@ class WorkflowLaunchHandler(tornado.web.RequestHandler):
 			with open(dst, 'a') as f:
 				f.write('weblog { enabled = true\n url = \"http://%s:8080/api/tasks\" }\n' % (socket.gethostbyname(socket.gethostname())))
 				f.write('local { launchDir = \"%s\" }\n' % (work_dir))
-				f.write('process { executor = "slurm" )')
+				f.write('process { executor = "slurm" }')
+
+				# process {
+#   executor='slurm'
+#   queueSize = 15
+#   pollInterval = '5 min'
+#   dumpInterval = '6 min'
+#   queueStatInterval = '5 min'
+#   exitReadTimeout = '13 min'
+#   killBatchSize = 30
+#   submitRateLimit = '20 min'
+#   clusterOptions = '-q debug -t 00:30:00 -C haswell'
+# }    
 
 			# update workflow status
 			workflow['status'] = 'running'
