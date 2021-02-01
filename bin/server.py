@@ -1,6 +1,6 @@
-#!/usr/bin/env python3.7
+#!/usr/bin/env python3
 
-import pybson
+import bson
 import json
 import multiprocessing as mp
 import os
@@ -97,7 +97,7 @@ class WorkflowCreateHandler(tornado.web.RequestHandler):
 
 		# create workflow
 		workflow = {**self.DEFAULTS, **data, **{ 'status': 'nascent' }}
-		workflow['_id'] = str(pybson.ObjectId())
+		workflow['_id'] = str(bson.ObjectId())
 
 		# append creation timestamp to workflow
 		workflow['date_created'] = int(time.time() * 1000)
@@ -419,7 +419,7 @@ class TaskQueryHandler(tornado.web.RequestHandler):
 
 		try:
 			# append id to task
-			task['_id'] = str(pybson.ObjectId())
+			task['_id'] = str(bson.ObjectId())
 
 			# extract input features for task
 			if task['event'] == 'process_completed':
