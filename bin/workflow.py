@@ -24,7 +24,7 @@ def run_workflow(workflow, work_dir, resume):
 			'kuberun',
 			workflow['pipeline'],
 			'-ansi-log', 'false',
-			'-latest',
+			'-latest','1',
 			'-name', 'workflow-%s-%04d' % (workflow['_id'], workflow['attempts']),
 			'-profile', workflow['profiles'],
 			'-revision', workflow['revision'],
