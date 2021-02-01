@@ -15,8 +15,10 @@ def run_workflow(workflow, work_dir, resume):
 	# change to workflow directory
 	os.chdir(work_dir)
 
+	run_name = 'workflow-%s-%04d' % (workflow['_id'], workflow['attempts'])
+
 	# Create a new shell script that can be sent to SLURM via sbatch
-	run_script = os.path.join(work_dir, 'run.sh')		
+	run_script = os.path.join(work_dir, run_name+'.sh')		
 	if os.path.exists(run_script):
 		os.remove(run_script)
 
@@ -35,7 +37,7 @@ def run_workflow(workflow, work_dir, resume):
 			workflow['pipeline'],
 			'-ansi-log', 'false',
 			'-latest','1',
-			'-name', 'workflow-%s-%04d' % (workflow['_id'], workflow['attempts']),
+			'-name', run_name,
 			'-profile', workflow['profiles'],
 			'-revision', workflow['revision'],
 			'-volume-mount', env.PVC_NAME
@@ -53,7 +55,7 @@ def run_workflow(workflow, work_dir, resume):
 			'-latest','1',
 			'-with-report','report.html',
 			'-with-trace','trace.txt',
-			'-name', 'workflow-%s-%04d' % (workflow['_id'], workflow['attempts']),
+			'-name', run_name,
 			'-profile', workflow['profiles'],
 			'-revision', workflow['revision'],
 			'-with-docker' if workflow['with_container'] else ''
@@ -70,7 +72,7 @@ def run_workflow(workflow, work_dir, resume):
 
 		args = [
 			'sbatch',
-			'run.sh'
+			run_name+'.sh'
 		]
 		
 
