@@ -43,7 +43,7 @@ def run_workflow(workflow, work_dir, resume):
 
 	elif env.NXF_EXECUTOR == 'local':
 		
-		args = [
+		nextflow_args = [
 			'nextflow',
 			'-config', 'nextflow.config',
 			'-log', os.path.join(workflow['output_dir'], 'nextflow.log'),
@@ -59,33 +59,23 @@ def run_workflow(workflow, work_dir, resume):
 			'-with-docker' if workflow['with_container'] else ''
 		]
 
+		if resume:
+			nextflow_args.append('-resume')
+
 		with open(run_script, 'a') as f:
 			f.write('#!/bin/bash \n')
 			run_commands = " " 
-			f.write(run_commands.join(args))
+			f.write(run_commands.join(nextflow_args))
+
 
 		args = [
-			'sbatch run.sh'
+			'sbatch',
+			'run.sh'
 		]
 		
 
-	elif env.NXF_EXECUTOR == 'pbspro':
-		args = [
-			'nextflow',
-			'-config', 'nextflow.config',
-			'-log', os.path.join(workflow['output_dir'], 'nextflow.log'),
-			'run',
-			workflow['pipeline'],
-			'-ansi-log', 'false',
-			'-latest','1',
-			'-name', 'workflow-%s-%04d' % (workflow['_id'], workflow['attempts']),
-			'-profile', workflow['profiles'],
-			'-revision', workflow['revision'],
-			'-with-singularity' if workflow['with_container'] else ''
-		]
 
-	if resume:
-		args.append('-resume')
+	
 
 	proc = subprocess.Popen(
 		args,
