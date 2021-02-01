@@ -6,8 +6,8 @@ PVC_NAME = os.environ.get('PVC_NAME')
 
 # define working directories
 BASE_DIRS = {
-	'k8s':    '/workspace',
-	'local':  '.',
+	'k8s':    '/home/workspace',
+	'local':  '/home/workspace',
 	'pbspro': '.'
 }
 BASE_DIR = BASE_DIRS[NXF_EXECUTOR]
