@@ -287,7 +287,7 @@ class WorkflowLaunchHandler(tornado.web.RequestHandler):
 			# append additional settings to nextflow.config
 			with open(dst, 'a') as f:
 				f.write('weblog { enabled = true\n url = \"http://%s:8080/api/tasks\" }\n' % (socket.gethostbyname(socket.gethostname())))
-				f.write('k8s { launchDir = \"%s\" }\n' % (work_dir))
+				f.write('local { launchDir = \"%s\" }\n' % (work_dir))
 
 			# update workflow status
 			workflow['status'] = 'running'
