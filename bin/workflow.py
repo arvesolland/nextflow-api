@@ -46,7 +46,6 @@ def run_workflow(workflow, work_dir, resume):
 	elif env.NXF_EXECUTOR == 'local':
 		
 		args = [
-			'srun',
 			'nextflow',
 			'-config', 'nextflow.config',
 			'-log', os.path.join(workflow['output_dir'], 'nextflow.log'),
