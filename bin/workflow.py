@@ -45,7 +45,7 @@ def run_workflow(workflow, work_dir, resume):
 
 	elif env.NXF_EXECUTOR == 'local':
 		
-		nextflow_args = [
+		args = [
 			'nextflow',
 			'-config', 'nextflow.config',
 			'-log', os.path.join(workflow['output_dir'], 'nextflow.log'),
@@ -62,18 +62,18 @@ def run_workflow(workflow, work_dir, resume):
 		]
 
 		if resume:
-			nextflow_args.append('-resume')
+			args.append('-resume')
 
 		with open(run_script, 'a') as f:
 			f.write('#!/bin/bash \n')
 			run_commands = " " 
-			f.write(run_commands.join(nextflow_args))
+			f.write(run_commands.join(args))
 
 
-		args = [
-			'sbatch',
-			run_name+'.sh'
-		]
+		# args = [
+		# 	'sbatch',
+		# 	run_name+'.sh'
+		# ]
 		
 
 
